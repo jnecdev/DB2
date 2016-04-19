@@ -1,0 +1,50 @@
+connect to sample2;
+
+drop table department;
+drop table employee;
+
+create table department
+(DEPTNO integer not null constraint deptno_pk primary key,DEPTNAME varchar(20));
+
+
+insert into department values(10,'HR'),(20,'ACCTG'),(30,'SALES');
+
+create table employee
+(EMPNO integer not null constraint empno_pk primary key,ENAME varchar(20),WORKDEPT integer);
+
+insert into employee values(1,'Juan',10),(2,'Mary',20);
+
+--3 RULES in DELETION:ON DELETE RESTRICT, ON DELETE SET NULL, ON DELETE CASCADE
+--on delete set null-hindi madedelete workdept set null
+--on delete cascade-lahat madedelete
+
+--1st rule
+alter table employee drop constraint deptno_fk;
+alter table employee add constraint deptno_fk foreign key(WORKDEPT) references department(deptno) on delete restrict;
+
+delete from department where deptno=10;
+
+select * from department;
+select * from employee;
+
+--2nd rule
+alter table employee drop constraint deptno_fk;
+alter table employee add constraint deptno_fk foreign key(WORKDEPT) references department(deptno) on delete set null;
+
+delete from department where deptno=10;
+
+select * from department;
+select * from employee;
+
+--3rd rule
+insert into department values(10,'HR');
+update employee set WORKDEPT=10 where ENAME='Juan';
+
+alter table employee drop constraint deptno_fk;
+alter table employee add constraint deptno_fk foreign key(WORKDEPT) references department(deptno) on delete cascade;
+
+delete from department where deptno=10;
+
+select * from department;
+select * from employee;
+

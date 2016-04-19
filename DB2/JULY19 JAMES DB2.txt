@@ -1,0 +1,93 @@
+connect to sample1;
+
+drop table INFO;
+drop table DETAIL;
+
+create table INFO(EMPNO integer,FNAME varchar(20),LNAME varchar(20));
+insert into INFO values(001,'Emily','Stevens'),(002,'John','Doe'),(003,'James','Smith');
+
+create table DETAIL(EMPNO integer,ROLE varchar(5),EXT integer,TITLE varchar(5));
+insert into DETAIL values(001,'MGR',445,'Mrs.'),(004,'EXEC',101,'Dr.');
+
+create view myview as select EMPNO,FNAME from INFO;
+
+update myview set EMPNO=004 where FNAME='James';
+
+update INFO set EMPNO=004 where FNAME='James';
+
+select * from myview;
+
+create view ExecView as select i.EMPNO,i.FNAME,d.TITLE from INFO i,DETAIL d where i.EMPNO=d.EMPNO and d.ROLE='EXEC';
+
+select * from ExecView;
+
+drop synonym empinfo;
+drop synonym Executive;
+
+create synonym empinfo for INFO;
+
+create synonym Executive for ExecView;
+
+select * from INFO;
+
+select * from empinfo;
+
+select * from Executive;
+
+update INFO set EMPNO=003 where FNAME='James';
+
+--inner join
+select * from INFO i inner join DETAIL d on i.EMPNO=d.EMPNO;
+
+--left join
+select * from INFO i left join DETAIL d on i.EMPNO=d.EMPNO;
+
+--right join
+select * from INFO i right join DETAIL d on i.EMPNO=d.EMPNO;
+
+--full join
+select * from INFO i full join DETAIL d on i.EMPNO=d.EMPNO;
+
+--cross join
+select * from INFO,DETAIL;
+select * from INFO cross join DETAIL;
+
+alter table INFO add column deptno integer;
+
+describe table INFO;
+
+select * from INFO;
+
+update INFO set deptno=10;
+
+select * from INFO;
+
+--renaming column
+alter table INFO rename column EMPNO to EMPID;
+
+insert into INFO values(005,'Mary','Santos',10);
+
+alter table INFO alter column deptno set not null;
+
+--refresh
+reorg table INFO;
+
+update INFO set deptno=10;
+
+rename INFO to info_empp;
+
+--object is undefined
+select * from INFO;
+
+--new name
+select * from info_empp;
+
+--delete(DML)
+delete from info_empp;
+select * from info_empp;
+
+--drop(DDL)
+drop table info_empp;
+
+-- does not exist
+select * from info_empp;

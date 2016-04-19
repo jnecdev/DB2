@@ -1,0 +1,41 @@
+connect to sample1;
+
+drop table PRODUCT;
+drop table SALES;
+
+--1
+create table product
+(PRODID integer not null,PRODNAME varchar(20),QTY integer,PRICE decimal(8,2));
+
+--2
+insert into PRODUCT values(1,'Apple',10,150),
+(2,'Banana',20,300),
+(3,'Calamansi',30,150),
+(4,'Mango',40,2000),
+(5,'Grapes',50,5000);
+
+--3
+create view ViewProdPrice as select PRODID,PRICE from PRODUCT;
+
+--4
+drop synonym VPrice;
+create synonym VPrice for ViewProdPrice;
+
+--5
+select * from PRODUCT;
+select * from ViewProdPrice;
+select * from VPrice;
+
+--6
+create table SALES(TRANSID integer not null,CUSTID varchar(20),PRODID integer,PQTY integer);
+
+--7
+insert into SALES values(101,'A101',5,4),
+(102,'B102',3,3),
+(103,'B102',2,2);
+
+--8
+select * from PRODUCT p inner join SALES s on p.PRODID=s.PRODID;
+select * from PRODUCT p right join SALES s on p.PRODID=s.PRODID;
+select * from PRODUCT p left join SALES s on p.PRODID=s.PRODID;
+select * from PRODUCT p full join SALES s on p.PRODID=s.PRODID;
